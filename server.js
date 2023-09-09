@@ -27,7 +27,7 @@ app.all('*', (req, res, next) => {
     // or use ApiError class
     next(new ApiError(`Page not found : ${req.originalUrl}`, 400))
 })
-// Global error handeling middleware provided by express
+// Global error handeling middleware for express
 app.use(globalError)
 
 
