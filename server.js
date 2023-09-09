@@ -36,3 +36,9 @@ const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 
+// Events => we listen on unhandledRejection=> to get callback with all errors from promises outside express
+process.on('unhandledRejection', (err) => {
+    console.log(`unhandledRejection Error : ${err}`);
+    process.exit(1);
+});
+
