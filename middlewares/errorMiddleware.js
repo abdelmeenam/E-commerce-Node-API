@@ -5,16 +5,24 @@ const globalError = (err, req, res, next) => {
     if (process.env.NODE_ENV === 'development') {
         sendErrorDev(err, res);
     }
-
-
+    if (process.env.NODE_ENV === 'production') {
+        sendErrorProd(err, res);
+    }
 }
 
 const sendErrorDev = (err, res) => {
     return res.status(err.statusCode).json({
         status: err.status,
-        error: err,
         message: err.message,
+        error: err,
         stack: err.stack
+    })
+}
+
+const sendErrorProd = (err, res) => {
+    return res.status(err.statusCode).json({
+        status: err.status,
+        message: err.message
     })
 }
 
