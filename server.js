@@ -24,14 +24,13 @@ app.all('*', (req, res, next) => {
     // catch error and send to error handeling middleware
     //const err = new Error(`Page not found : ${req.originalUrl}`);
     //next(err.message);
-
     // or use ApiError class
     next(new ApiError(`Page not found : ${req.originalUrl}`, 400))
 })
-
-
 // Global error handeling middleware provided by express
 app.use(globalError)
+
+
 
 
 const port = process.env.PORT || 8000;

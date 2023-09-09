@@ -48,7 +48,9 @@ const updateCategory = asyncHandler(async (req, res) => {
     );
 
     if (!category) {
-        res.status(404).json({ msg: `No category for this id ${id}` });
+        //res.status(404).json({ msg: `No category for this id ${id}` });
+        return next(new ApiError(`No category fot this id: ${id} `, 404))
+
     }
     res.status(200).json({ data: category });
 });
@@ -62,7 +64,9 @@ const deleteCategory = asyncHandler(async (req, res) => {
     const category = await Category.findByIdAndDelete(id);
 
     if (!category) {
-        res.status(404).json({ msg: `No category for this id ${id}` });
+        //res.status(404).json({ msg: `No category for this id ${id}` });
+        return next(new ApiError(`No category fot this id: ${id} `, 404))
+
     }
     res.status(204).send();
 });
