@@ -37,7 +37,7 @@ const createCategory = asyncHandler(async (req, res) => {
 // @desc    Update specific category
 // @route   PUT /api/v1/categories/:id
 // @access  Private
-const updateCategory = asyncHandler(async (req, res) => {
+const updateCategory = asyncHandler(async (req, res, next) => {
     const { id } = req.params;
     const { name } = req.body;
 
@@ -59,14 +59,13 @@ const updateCategory = asyncHandler(async (req, res) => {
 // @desc    Delete specific category
 // @route   DELETE /api/v1/categories/:id
 // @access  Private
-const deleteCategory = asyncHandler(async (req, res) => {
+const deleteCategory = asyncHandler(async (req, res, next) => {
     const { id } = req.params;
     const category = await Category.findByIdAndDelete(id);
 
     if (!category) {
         //res.status(404).json({ msg: `No category for this id ${id}` });
         return next(new ApiError(`No category fot this id: ${id} `, 404))
-
     }
     res.status(204).send();
 });
