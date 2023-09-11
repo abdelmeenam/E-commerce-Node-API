@@ -1,7 +1,6 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const morgan = require('morgan')
-
 dotenv.config({ path: 'config.env' })
 const ApiError = require('./utils/apiError');
 const globalError = require('./middlewares/errorMiddleware');
@@ -9,7 +8,7 @@ const dbConnection = require('./config/db');
 const categoryRoute = require('./routes/categoryRoute');
 
 
-// DB , app
+// DB Connection, app
 dbConnection();
 const app = express()
 
@@ -26,19 +25,20 @@ app.all('*', (req, res, next) => {
     //next(err.message);
     next(new ApiError(`Page not found : ${req.originalUrl}`, 400))
 })
+
 // Global error handeling middleware for express
 app.use(globalError)
 
-
-
-
 const port = process.env.PORT || 8000;
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+const server = app.listen(port, () => console.log(`App is listening on port ${port}!`))
 
 
-// Events => we listen on unhandledRejection=> to get callback with all errors from promises outside express
+// Handle Rejections from promises outside express
 process.on('unhandledRejection', (err) => {
-    console.log(`unhandledRejection Error : ${err}`);
-    process.exit(1);
+    console.error(`unhandledRejection Error : ${err} | ${err.message}`);
+    server.close(() => {
+        console.error('Shutting down.....');
+        process.exit(1);
+    })
 });
 
