@@ -33,7 +33,7 @@ const port = process.env.PORT || 8000;
 const server = app.listen(port, () => console.log(`App is listening on port ${port}!`))
 
 
-// Handle Rejections from promises outside express
+// Handle Rejections(errors) from promises outside express such as mongoDb
 process.on('unhandledRejection', (err) => {
     console.error(`unhandledRejection Error : ${err} | ${err.message}`);
     server.close(() => {
