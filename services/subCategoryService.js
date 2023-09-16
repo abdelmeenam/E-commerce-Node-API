@@ -3,6 +3,8 @@ const slugify = require('slugify')
 const ApiError = require('../utils/apiError');
 const SubCategory = require('../models/subCategoryModel')
 
+
+
 // @desc    createSubCategory
 // @route   POST /api/v1/subCategories
 // @access  Private
@@ -12,6 +14,8 @@ const createSubCategory = asyncHandler(async (req, res) => {
     res.status(201).json({ data: subCategory });
 });
 
+// Nested route
+// Get /categories/:categoryId/subcategory
 // @desc    Get list of subcategories
 // @route   GET /api/v1/subcategories
 // @access  Public
@@ -19,7 +23,14 @@ const getSubCategories = asyncHandler(async (req, res) => {
     const page = req.query.page * 1 || 1;
     const limit = req.query.limit * 1 || 5;
     const skip = (page - 1) * limit;
-    const subCategories = await SubCategory.find({}).skip(skip).limit(limit);
+
+    let filterObject = {};
+    if (req.params.categoryId) filterObject = { category: req.params.categoryId }
+
+    const subCategories = await SubCategory.find(filterObject)
+        .skip(skip)
+        .limit(limit)
+        .populate({ path: "category", select: 'name-_id' });
     res.status(200).json({ results: subCategories.length, page, data: subCategories });
 })
 
