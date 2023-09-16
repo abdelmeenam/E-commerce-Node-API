@@ -1,12 +1,14 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const morgan = require('morgan')
+
 dotenv.config({ path: 'config.env' })
 const ApiError = require('./utils/apiError');
 const globalError = require('./middlewares/errorMiddleware');
 const dbConnection = require('./config/db');
 const categoryRoute = require('./routes/categoryRoute');
 const subCategoryRoute = require('./routes/subCategoryRoute');
+const brandRoute = require('./routes/brandRoute');
 
 
 // DB Connection, app
@@ -21,6 +23,8 @@ if (process.env.NODE_ENV === 'development') { app.use(morgan('dev')) }
 // routes
 app.use('/api/v1/categories', categoryRoute);
 app.use('/api/v1/subcategories', subCategoryRoute);
+app.use('/api/v1/brands', brandRoute);
+
 
 app.all('*', (req, res, next) => {
     // catch error and send to error handeling middleware
