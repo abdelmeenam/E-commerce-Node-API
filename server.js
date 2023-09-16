@@ -6,6 +6,7 @@ const ApiError = require('./utils/apiError');
 const globalError = require('./middlewares/errorMiddleware');
 const dbConnection = require('./config/db');
 const categoryRoute = require('./routes/categoryRoute');
+const subCategoryRoute = require('./routes/subCategoryRoute');
 
 
 // DB Connection, app
@@ -19,6 +20,8 @@ if (process.env.NODE_ENV === 'development') { app.use(morgan('dev')) }
 
 // routes
 app.use('/api/v1/categories', categoryRoute);
+app.use('/api/v1/subcategories', subCategoryRoute);
+
 app.all('*', (req, res, next) => {
     // catch error and send to error handeling middleware
     //const err = new Error(`Page not found : ${req.originalUrl}`);
