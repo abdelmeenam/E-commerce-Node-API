@@ -71,9 +71,13 @@ const productSchema = new mongoose.Schema(
     },
     {
         timestamps: true,
+        // to enable virtual populate
+        // toJSON: { virtuals: true },
+        // toObject: { virtuals: true },
     }
 );
 
+const Product = mongoose.model('product', productSchema);
 
 
-module.exports = mongoose.model('product', productSchema);
+
